@@ -1,36 +1,216 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ALX Polly - Polling Application
 
-## Getting Started
+A modern Next.js polling application built with TypeScript, Tailwind CSS, and comprehensive testing setup.
 
-First, run the development server:
+## 🚀 Features
 
+- **Next.js 15.5.2** with App Router
+- **React 19.1.0** with TypeScript
+- **Tailwind CSS v4** for styling
+- **Jest & Testing Library** for comprehensive testing
+- **User Authentication** (login/register pages)
+- **Poll Creation & Management** with dynamic forms
+- **Voting System** with real-time results
+- **QR Code Sharing** for easy poll distribution
+- **Responsive Design** with mobile-first approach
+- **Modern Development Tools** with hot reloading
+
+## 📋 Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+
+## 🛠️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd alx-polly
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install --legacy-peer-deps
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp env.example .env.local
+   # Edit .env.local with your configuration
+   ```
+
+## 🏃‍♂️ Development
+
+### Start Development Server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+### Run Tests
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Build for Production
+```bash
+npm run build
+npm start
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧪 Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application includes comprehensive tests:
 
-## Learn More
+- **Unit Tests**: Component testing with React Testing Library
+- **Integration Tests**: API endpoint testing
+- **Test Coverage**: Jest coverage reporting
 
-To learn more about Next.js, take a look at the following resources:
+### Test Structure
+```
+__tests__/
+├── page.test.tsx      # Main page component tests
+└── api.test.ts        # API endpoint tests
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔧 API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Health Check
+- **GET** `/api/health`
+- Returns application status and metadata
 
-## Deploy on Vercel
+### Polls
+- **GET** `/api/polls` - List all polls
+- **POST** `/api/polls` - Create a new poll
+- **GET** `/api/polls/[id]` - Get specific poll
+- **PUT** `/api/polls/[id]` - Update poll
+- **DELETE** `/api/polls/[id]` - Delete poll
+- **POST** `/api/polls/[id]/vote` - Vote on a poll
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+alx-polly/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   │   ├── health/        # Health check endpoint
+│   │   └── polls/         # Poll-related endpoints
+│   ├── auth/              # Authentication pages
+│   │   ├── login/         # Login page
+│   │   └── register/      # Registration page
+│   ├── polls/             # Poll pages
+│   │   ├── [id]/          # Dynamic poll pages
+│   │   │   ├── results/   # Poll results
+│   │   │   └── share/     # Poll sharing
+│   │   ├── new/           # Create new poll
+│   │   └── page.tsx       # Polls listing
+│   ├── components/        # Reusable components
+│   │   ├── ui/            # UI components (Button, etc.)
+│   │   ├── Navigation.tsx # Main navigation
+│   │   ├── PollForm.tsx   # Poll creation form
+│   │   ├── VoteResult.tsx # Vote results display
+│   │   └── QRCodeCard.tsx # QR code sharing
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── lib/                   # Utility functions
+│   ├── utils.ts           # Utility functions
+│   └── types.ts           # TypeScript types
+├── __tests__/             # Test files
+├── public/                # Static assets
+├── jest.config.js         # Jest configuration
+├── jest.setup.js          # Jest setup
+├── next.config.ts         # Next.js configuration
+├── package.json           # Dependencies and scripts
+├── tsconfig.json          # TypeScript configuration
+└── env.example            # Environment variables template
+```
+
+## 🌍 Environment Variables
+
+Copy `env.example` to `.env.local` and configure:
+
+```env
+# Application Configuration
+NODE_ENV=development
+NEXT_PUBLIC_APP_NAME=ALX Polly
+NEXT_PUBLIC_APP_VERSION=1.0.0
+
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3000
+
+# Security (replace with actual values in production)
+# JWT_SECRET=your-jwt-secret-here
+# COOKIE_SECRET=your-cookie-secret-here
+
+# Database (if needed in future)
+# DATABASE_URL=postgresql://username:password@localhost:5432/database
+
+# External Services (if needed in future)
+# NEXT_PUBLIC_ANALYTICS_ID=your-analytics-id
+# EMAIL_SERVICE_API_KEY=your-email-service-key
+```
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy automatically on push
+
+### Manual Deployment
+1. Build the application: `npm run build`
+2. Start the production server: `npm start`
+3. Set environment variables in your hosting platform
+
+## 🔒 Security Considerations
+
+- All external links use `rel="noopener noreferrer"`
+- Environment variables for sensitive data
+- Input validation on API endpoints
+- HTTPS enforcement in production
+- User authentication (to be implemented)
+
+## 📈 Performance
+
+- Optimized images with Next.js Image component
+- Font optimization with `next/font`
+- Static generation where possible
+- Minimal bundle size with tree shaking
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Run the test suite
+6. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For support and questions:
+- Check the [Next.js documentation](https://nextjs.org/docs)
+- Review the test files for usage examples
+- Open an issue in the repository
+
+## 🎯 Upcoming Features
+
+- [ ] User authentication with JWT
+- [ ] Database integration (PostgreSQL)
+- [ ] Real-time voting updates
+- [ ] Email notifications
+- [ ] Advanced analytics
+- [ ] Mobile app
+- [ ] Social media integration
