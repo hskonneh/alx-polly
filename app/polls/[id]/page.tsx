@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/app/components/ui/button'
 import Link from 'next/link'
 
@@ -20,10 +20,16 @@ const mockPoll = {
   createdAt: '2024-01-15T10:30:00Z'
 }
 
-export default function PollPage({ params }: { params: { id: string } }) {
+export default function PollPage({ params }: { params: Promise<{ id: string }> }) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [hasVoted, setHasVoted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [pollId, setPollId] = useState<string>('')
+
+  // Handle async params
+  useEffect(() => {
+    params.then(({ id }) => setPollId(id))
+  }, [params])
 
   const handleVote = async () => {
     if (!selectedOption) return
@@ -145,12 +151,12 @@ export default function PollPage({ params }: { params: { id: string } }) {
 
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div className="flex gap-3">
-              <Link href={`/polls/${params.id}/results`} className="flex-1">
+              <Link href={`/polls/${pollId}/results`} className="flex-1">
                 <Button variant="outline" className="w-full">
                   View Detailed Results
                 </Button>
               </Link>
-              <Link href={`/polls/${params.id}/share`}>
+              <Link href={`/polls/${pollId}/share`}>
                 <Button variant="ghost">
                   Share Poll
                 </Button>

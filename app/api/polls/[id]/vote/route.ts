@@ -24,8 +24,9 @@ let votes = new Set<string>()
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const body = await request.json()
     const { optionId } = body
@@ -37,7 +38,7 @@ export async function POST(
       )
     }
 
-    const pollIndex = polls.findIndex(p => p.id === params.id)
+    const pollIndex = polls.findIndex(p => p.id === id)
     
     if (pollIndex === -1) {
       return NextResponse.json(
@@ -66,7 +67,7 @@ export async function POST(
 
     // TODO: Implement proper user identification
     const userId = 'anonymous' // Replace with actual user ID from authentication
-    const voteKey = `${params.id}-${userId}`
+    const voteKey = `${id}-${userId}`
 
     // Check if user has already voted (basic implementation)
     if (votes.has(voteKey)) {

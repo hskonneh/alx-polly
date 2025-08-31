@@ -40,6 +40,9 @@ export default function Home() {
             <li className="tracking-[-.01em]">
               Developer Hassan S. Konneh. 😎✌🏽
             </li>
+            <li>
+              The other developer is Queen Amoateng😁
+            </li>
           </ol>
         </div>
 

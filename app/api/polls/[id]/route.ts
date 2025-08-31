@@ -21,10 +21,11 @@ let polls = [
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const poll = polls.find(p => p.id === params.id)
+    const poll = polls.find(p => p.id === id)
     
     if (!poll) {
       return NextResponse.json(
@@ -45,13 +46,14 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const body = await request.json()
     const { isActive } = body
 
-    const pollIndex = polls.findIndex(p => p.id === params.id)
+    const pollIndex = polls.findIndex(p => p.id === id)
     
     if (pollIndex === -1) {
       return NextResponse.json(
@@ -78,10 +80,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const pollIndex = polls.findIndex(p => p.id === params.id)
+    const pollIndex = polls.findIndex(p => p.id === id)
     
     if (pollIndex === -1) {
       return NextResponse.json(

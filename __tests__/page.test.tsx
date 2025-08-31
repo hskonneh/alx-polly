@@ -6,30 +6,27 @@ describe('Home', () => {
     render(<Home />)
     
     // Check for main content
-    expect(screen.getByText(/Get started by editing/i)).toBeInTheDocument()
-    expect(screen.getByText(/Save and see your changes instantly/i)).toBeInTheDocument()
+    expect(screen.getByText('ALX Polly')).toBeInTheDocument()
+    expect(screen.getByText('Create and share polls with ease')).toBeInTheDocument()
     
     // Check for navigation links
-    expect(screen.getByText('Deploy now')).toBeInTheDocument()
-    expect(screen.getByText('Read our docs')).toBeInTheDocument()
-    
-    // Check for footer links
-    expect(screen.getByText('Learn')).toBeInTheDocument()
-    expect(screen.getByText('Examples')).toBeInTheDocument()
-    expect(screen.getByText(/Go to nextjs.org/i)).toBeInTheDocument()
+    expect(screen.getByText('View Polls')).toBeInTheDocument()
+    expect(screen.getByText('Create Poll')).toBeInTheDocument()
   })
 
-  it('renders Next.js logo', () => {
+  it('renders developer credits', () => {
     render(<Home />)
-    const logo = screen.getByAltText('Next.js logo')
-    expect(logo).toBeInTheDocument()
+    expect(screen.getByText(/Developer Hassan S. Konneh/)).toBeInTheDocument()
+    expect(screen.getByText(/Queen Amoateng/)).toBeInTheDocument()
   })
 
-  it('has proper link attributes', () => {
+  it('has proper navigation links', () => {
     render(<Home />)
     
-    const deployLink = screen.getByText('Deploy now').closest('a')
-    expect(deployLink).toHaveAttribute('target', '_blank')
-    expect(deployLink).toHaveAttribute('rel', 'noopener noreferrer')
+    const pollsLink = screen.getByText('View Polls').closest('a')
+    expect(pollsLink).toBeInTheDocument()
+    
+    const createPollLink = screen.getByText('Create Poll').closest('a')
+    expect(createPollLink).toBeInTheDocument()
   })
 })

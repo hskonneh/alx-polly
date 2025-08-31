@@ -1,14 +1,15 @@
 import QRCodeCard from '@/app/components/QRCodeCard'
 import Link from 'next/link'
 
-export default function SharePollPage({ params }: { params: { id: string } }) {
-  const pollUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/polls/${params.id}`
+export default async function SharePollPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const pollUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/polls/${id}`
   
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
-          <Link href={`/polls/${params.id}`} className="text-blue-600 hover:text-blue-500">
+          <Link href={`/polls/${id}`} className="text-blue-600 hover:text-blue-500">
             ← Back to Poll
           </Link>
         </div>
@@ -22,7 +23,7 @@ export default function SharePollPage({ params }: { params: { id: string } }) {
 
         <div className="grid gap-8 md:grid-cols-2">
           <QRCodeCard
-            pollId={params.id}
+            pollId={id}
             pollUrl={pollUrl}
             title="Share Poll"
           />

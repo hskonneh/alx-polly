@@ -1,18 +1,15 @@
+'use client'
+
+import ProtectedRoute from '@/app/components/ProtectedRoute'
 import PollForm from '@/app/components/PollForm'
 
 export default function NewPollPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create New Poll</h1>
-          <p className="mt-2 text-gray-600">
-            Create a new poll to gather opinions from your audience
-          </p>
-        </div>
-        
+    <ProtectedRoute>
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Create New Poll</h1>
         <PollForm />
       </div>
-    </div>
+    </ProtectedRoute>
   )
 }

@@ -15,12 +15,13 @@ const mockPollResults = {
   totalVotes: 156
 }
 
-export default function PollResultsPage({ params }: { params: { id: string } }) {
+export default async function PollResultsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
-          <Link href={`/polls/${params.id}`} className="text-blue-600 hover:text-blue-500">
+          <Link href={`/polls/${id}`} className="text-blue-600 hover:text-blue-500">
             ← Back to Poll
           </Link>
         </div>
@@ -60,10 +61,10 @@ export default function PollResultsPage({ params }: { params: { id: string } }) 
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
             <div className="space-y-3">
-              <Link href={`/polls/${params.id}/share`} className="block">
+              <Link href={`/polls/${id}/share`} className="block">
                 <Button className="w-full">Share Results</Button>
               </Link>
-              <Link href={`/polls/${params.id}`} className="block">
+              <Link href={`/polls/${id}`} className="block">
                 <Button variant="outline" className="w-full">View Poll</Button>
               </Link>
             </div>
