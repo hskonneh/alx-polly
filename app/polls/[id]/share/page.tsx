@@ -1,5 +1,6 @@
 import QRCodeCard from '@/app/components/QRCodeCard'
 import Link from 'next/link'
+import ShareButton from '@/app/components/ShareButton' // Import the new Client Component
 
 export default async function SharePollPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -41,14 +42,14 @@ export default async function SharePollPage({ params }: { params: Promise<{ id: 
                     type="text"
                     value={pollUrl}
                     readOnly
-                    className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50"
+                    className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50 text-gray-800"
+                    aria-label="Poll URL"
                   />
-                  <button
-                    onClick={() => navigator.clipboard.writeText(pollUrl)}
+                  <ShareButton
+                    textToCopy={pollUrl}
+                    buttonText="Copy"
                     className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Copy
-                  </button>
+                  />
                 </div>
               </div>
               
@@ -79,7 +80,8 @@ export default async function SharePollPage({ params }: { params: Promise<{ id: 
                   value={`<iframe src="${pollUrl}" width="100%" height="400" frameborder="0"></iframe>`}
                   readOnly
                   rows={3}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50 font-mono"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-100 font-mono text-gray-800"
+                  aria-label="Embed code for poll"
                 />
               </div>
             </div>
