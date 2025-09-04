@@ -65,7 +65,7 @@ export default function PollForm() {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900">Create New Poll</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">New Poll Form</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -79,7 +79,7 @@ export default function PollForm() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="What would you like to ask?"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="text-gray-900 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             required
           />
         </div>
@@ -96,7 +96,7 @@ export default function PollForm() {
                   value={option}
                   onChange={(e) => handleOptionChange(index, e.target.value)}
                   placeholder={`Option ${index + 1}`}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="text-gray-900 flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
                 {options.length > 2 && (
@@ -117,7 +117,7 @@ export default function PollForm() {
             type="button"
             variant="outline"
             onClick={addOption}
-            className="mt-3"
+            className="mt-3 cursor-pointer"
           >
             Add Option
           </Button>
@@ -126,12 +126,12 @@ export default function PollForm() {
         <div className="flex gap-3">
           <Button
             type="submit"
-            className="flex-1"
+            className="flex-1 text-gray-900 cursor-pointer"
             disabled={loading}
           >
             {loading ? "Creating Poll..." : "Create Poll"}
           </Button>
-          <Button type="button" variant="outline">
+          <Button type="button" variant="outline" className="cursor-pointer">
             Cancel
           </Button>
         </div>

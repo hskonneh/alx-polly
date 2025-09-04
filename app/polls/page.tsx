@@ -36,7 +36,7 @@ export default function PollsPage() {
             <p className="mt-2 text-gray-600">Browse and participate in polls</p>
           </div>
           <Link href="/polls/new">
-            <Button>Create New Poll</Button>
+            <Button >Create New Poll</Button>
           </Link>
         </div>
 

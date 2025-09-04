@@ -7,8 +7,8 @@ export default function Home() {
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <div className="text-center sm:text-left">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            ALX Polly
+          <h1 className="text-4xl font-bold text-white-200 mb-4">
+            ALX Polling Application
           </h1>
           <p className="text-xl text-gray-600 mb-8">
             Create and share polls with ease
@@ -68,7 +68,7 @@ export default function Home() {
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="hover:underline flex items-center gap-2 hover:underline-offset-4 hover:text-blue-400"
           href="/polls"
         >
           <Image
@@ -81,7 +81,7 @@ export default function Home() {
           Polls
         </Link>
         <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:text-blue-400"
           href="/auth/login"
         >
           <Image
@@ -94,7 +94,7 @@ export default function Home() {
           Sign In
         </Link>
         <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:text-blue-400"
           href="/auth/register"
         >
           <Image

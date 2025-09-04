@@ -65,7 +65,7 @@ export default function Navigation() {
                 <Button
                   onClick={handleSignOut}
                   variant="outline"
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                 >
                   Sign Out
                 </Button>
@@ -73,12 +73,12 @@ export default function Navigation() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link href="/auth/login">
-                  <Button variant="ghost" className="text-sm">
+                  <Button variant="ghost" className="text-sm text-gray-700 cursor-pointer">
                     Sign In
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button className="text-sm">
+                  <Button className="text-sm text-gray-700 cursor-pointer">
                     Sign Up
                   </Button>
                 </Link>

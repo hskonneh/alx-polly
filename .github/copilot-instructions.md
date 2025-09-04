@@ -1,11 +1,56 @@
-```markdown
-# Copilot Instructions for ALX Polly
+---
+description: Core rules, conventions, and architectural guidelines for the Polling App with QR Code Sharing project.
+globs:
+alwaysApply: true
+---
 
-This document provides essential guidance for AI coding agents working on the ALX Polly project. Focus on these patterns and workflows to be immediately productive.
+## Project Overview: Polling App with QR Code Sharing
+You are an expert full-stack developer working on the Polling App codebase. Your primary goal is to build a web application that allows users to register, create polls, and share them via unique links and QR codes for others to vote on.
 
-## 1. Project Architecture & Data Flow
+Adhere strictly to the rules, patterns, and conventions outlined in this document to ensure code quality, consistency, and maintainability.
 
-ALX Polly is a Next.js application using the App Router. Key architectural aspects:
+## Technology Stack
+The project uses the following technologies. Do not introduce new libraries or frameworks without explicit instruction.
+
+- Language: TypeScript
+- Main Framework: Next.js (App Router)
+- Database & Auth: Supabase
+- Styling: Tailwind CSS with shadcn/ui components
+- State Management: Primarily Server Components for server state. Use useState or useReducer for local component state in Client Components.
+- API Communication: Use Next.js Server Actions for mutations (creating polls, voting). Fetch data in Server Components using the Supabase client.
+- Utility Libraries: A library like qrcode.react for generating QR codes.
+
+
+## Architecture & Code Style
+
+- Directory Structure: Follow the standard Next.js App Router structure.
+    - `/app` for routes and pages.
+    - `/components/ui` for `shadcn/ui` components.
+    - `/components/` for custom, reusable components.
+    - `/lib` for Supabase client setup, utility functions, and Server Actions.
+
+- Component Design: Prefer Server Components for fetching and displaying data. Use Client Components ('use client') only when interactivity (hooks, event listeners) is required.
+- Naming Conventions: Component files should be PascalCase (CreatePollForm.tsx). Utility and action functions should be camelCase (submitVote.ts).
+- Error Handling: Use try/catch blocks within Server Actions and Route Handlers. Use Next.js error.tsx files for handling errors within route segments.
+- API Keys & Secrets: Never hardcode secrets. Use environment variables (.env.local) for Supabase URL and keys, accessed via process.env.NEXT_PUBLIC_SUPABASE_URL and process.env.SUPABASE_SECRET_KEY.
+
+## Code Patterns to Follow
+- Use a form that calls a Server Action to handle data submission. This keeps client-side JavaScript minimal.
+- Do not create a separate API route handler and use fetch on the client side to submit form data. Use Server Actions instead.
+- Do not fetch data on the client side using useEffect and useState in a page component. Fetch data directly in a Server Component.
+
+## Verification Checklist
+Before finalizing your response, you MUST verify the following:
+
+- Does the code use the Next.js App Router and Server Components for data fetching?
+- Are Server Actions used for data mutations (forms)?
+- Is the Supabase client used for all database interactions?
+- Are shadcn/ui components used for the UI where appropriate?
+- Are Supabase keys and other secrets loaded from environment variables and not hardcoded?
+
+
+
+
 
 - **Frontend (Next.js App Router)**: Located in the `app/` directory. Pages (`page.tsx`), layouts (`layout.tsx`), and API routes (`api/`) are organized here.
 - **API Routes**: Defined under `app/api/`. These act as backend endpoints for the frontend. Examples:
@@ -22,7 +67,7 @@ ALX Polly is a Next.js application using the App Router. Key architectural aspec
 3. `app/api/polls/route.ts` handles the request, creates the poll, and returns the new poll data.
 4. The frontend then redirects the user to the new poll's page (`/polls/[id]`).
 
-## 2. Critical Developer Workflows
+## Critical Developer Workflows
 
 - **Installation**: `npm install --legacy-peer-deps`
 - **Development Server**: `npm run dev` (access at `http://localhost:3000`)
@@ -33,14 +78,14 @@ ALX Polly is a Next.js application using the App Router. Key architectural aspec
     - Test files are located in the `__tests__/` directory, mirroring the structure of the `app/` and `api/` directories where applicable.
 - **Building for Production**: `npm run build` then `npm start`
 
-## 3. Project-Specific Conventions and Patterns
+## Project-Specific Conventions and Patterns
 
 - **Styling**: Uses Tailwind CSS v4. All styling should adhere to Tailwind's utility-first approach.
 - **TypeScript**: Strongly typed throughout the project. Ensure all new code is type-safe. Custom types are defined in `lib/types.ts`.
 - **API Route Handlers**: Follow Next.js App Router conventions for API routes (e.g., `GET`, `POST` functions exported from `route.ts`).
 - **Component Structure**: Functional components are preferred. State management within components uses React's `useState` and `useContext` (e.g., `app/contexts/AuthContext.tsx`).
 
-## 4. Integration Points & External Dependencies
+## Integration Points & External Dependencies
 
 - **Next.js**: Core framework for routing, API routes, and rendering.
 - **React**: UI library.
@@ -48,7 +93,7 @@ ALX Polly is a Next.js application using the App Router. Key architectural aspec
 - **Jest & React Testing Library**: For all testing. Refer to `jest.config.js` and `jest.setup.js` for configuration.
 - **Environment Variables**: Managed via `.env.local` (copied from `env.example`). Critical variables include `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_API_URL`.
 
-## 5. Key Files and Directories
+## Key Files and Directories
 
 - `app/`: Contains all application-specific code (pages, API routes, components).
 - `app/api/`: All backend API route handlers.
@@ -59,7 +104,7 @@ ALX Polly is a Next.js application using the App Router. Key architectural aspec
 - `next.config.ts`: Next.js specific configurations.
 - `tsconfig.json`: TypeScript compiler settings.
 
-## 6. Rules for Creating a New Poll
+## Rules for Creating a New Poll
 
 1. Only authenticated users can create a new poll.
 2. Each poll must have a unique title and at least two options.
@@ -67,4 +112,4 @@ ALX Polly is a Next.js application using the App Router. Key architectural aspec
 4. Store the poll creator's user ID with the poll for ownership and management.
 5. Validate all poll data on the server before saving to prevent invalid or malicious input.
 
-```
+
