@@ -1,80 +1,100 @@
 'use client'
 
+import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { generateQRCode } from '@/lib/utils/qr-code'
+import { Button } from '@/app/components/ui/button'
+import ShareButton from '@/app/components/ShareButton'
+
 interface QRCodeCardProps {
   pollId: string
   pollUrl: string
   title?: string
 }
 
-export default function QRCodeCard({ pollId, pollUrl, title = "Share Poll" }: QRCodeCardProps) {
-  // Placeholder QR code - in real implementation, you'd use a QR code library
-  const qrCodePlaceholder = `data:image/svg+xml;base64,${btoa(`
-    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="200" fill="white"/>
-      <text x="100" y="100" text-anchor="middle" dy=".3em" font-family="monospace" font-size="12">QR Code</text>
-      <text x="100" y="120" text-anchor="middle" dy=".3em" font-family="monospace" font-size="8">${pollId}</text>
-    </svg>
-  `)}`
+export default function QRCodeCard({ 
+  pollId, 
+  pollUrl, 
+  title = 'Share Poll' 
+}: QRCodeCardProps) {
+  const [qrCodeDataUrl, setQRCodeDataUrl] = useState<string>('')
+  const [error, setError] = useState<string>('')
 
-  const copyToClipboard = async () => {
+  useEffect(() => {
+    async function fetchQRCode() {
+      try {
+        setError('')
+        const dataUrl = await generateQRCode(pollUrl)
+        if (!dataUrl) {
+          throw new Error('Failed to generate QR code')
+        }
+        setQRCodeDataUrl(dataUrl)
+      } catch (error) {
+        console.error('QR Code Generation Failed:', error)
+        setError('Failed to generate QR code. Please try again later.')
+      }
+    }
+
+    fetchQRCode()
+  }, [pollUrl])
+
+  const handleQRCodedownload = () => {
+    if (!qrCodeDataUrl) return
+
     try {
-      await navigator.clipboard.writeText(pollUrl)
-      // TODO: Add toast notification
-      console.log('URL copied to clipboard')
-    } catch (err) {
-      console.error('Failed to copy URL:', err)
+      const link = document.createElement('a')
+      link.href = qrCodeDataUrl
+      link.download = `poll-qr-${pollId}.png`
+      link.click()
+    } catch (error) {
+      console.error('Download failed:', error)
+      setError('Failed to download QR code. Please try again.')
     }
   }
 
   return (
-    <div className="max-w-sm mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900">{title}</h3>
-      
-      <div className="text-center mb-4">
-        <div className="inline-block p-4 bg-gray-50 rounded-lg">
-          <img
-            src={qrCodePlaceholder}
-            alt="QR Code"
-            className="w-32 h-32 mx-auto"
-          />
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        {title}
+      </h3>
+
+      {error ? (
+        <div className="flex justify-center items-center h-64 text-red-500">
+          <p>{error}</p>
         </div>
-      </div>
-      
-      <div className="space-y-3">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Poll URL
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={pollUrl}
-              readOnly
-              className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50"
+      ) : qrCodeDataUrl ? (
+        <div className="flex flex-col items-center space-y-4">
+          <div className="relative w-64 h-64">
+            <Image 
+              src={qrCodeDataUrl} 
+              alt="Poll QR Code" 
+              fill
+              className="object-contain"
+              priority
             />
-            <button
-              onClick={copyToClipboard}
-              className="px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          </div>
+
+          <div className=" space-x-4">
+            <Button className="cursor-pointer mx-auto block"
+              onClick={handleQRCodedownload}
+              variant="outline"
             >
-              Copy
-            </button>
+              Download QR Code
+            </Button>
+
+            <ShareButton className="text-gray-900 cursor-pointer mx-auto block"
+              textToCopy={pollUrl}
+              buttonText="Share Poll"
+              title="Check out this poll!"
+              url={pollUrl}
+            />
           </div>
         </div>
-        
-        <div className="text-center">
-          <p className="text-xs text-gray-600 mb-2">
-            Scan the QR code or share the URL to let others vote
-          </p>
-          <div className="flex justify-center gap-2">
-            <button className="px-4 py-2 text-sm bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
-              WhatsApp
-            </button>
-            <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-              Twitter
-            </button>
-          </div>
+      ) : (
+        <div className="flex justify-center items-center h-64">
+          <p className="text-gray-500">Generating QR Code...</p>
         </div>
-      </div>
+      )}
     </div>
   )
-}
+};
