@@ -8,7 +8,7 @@ export default async function SharePollPage({
 }: { 
   params: { id: string } 
 }) {
-  const { id } = params
+  const { id } = await params
   const pollUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/polls/${id}`
   
   return (
