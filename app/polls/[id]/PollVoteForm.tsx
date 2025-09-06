@@ -15,6 +15,24 @@ export default function PollVoteForm({ poll }: PollVoteFormProps) {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
+    /**
+     * PollVoteForm (Client Component)
+     * --------------------------------
+     * Renders a radio list of options and posts the selected option to the
+     * backend vote API. This component uses client state for the selected
+     * option and loading/error UI. It's purposely a Client Component because
+     * it interacts with browser APIs (window.location) and form events.
+     *
+     * Inputs:
+     * - poll: Poll object with `options` array. Options may come from a server
+     *   fetch and are normalized higher in the tree.
+     *
+     * Output / Side effect:
+     * - POSTs to `/api/polls/:id/vote` and navigates to the results page on
+     *   success. In future, this could use optimistic updates or a Server
+     *   Action instead of client POST.
+     */
+  
   const handleVote = async () => {
     if (!selectedOption) {
       setError('Please select an option to vote.')
@@ -50,7 +68,9 @@ export default function PollVoteForm({ poll }: PollVoteFormProps) {
     <div className="space-y-4">
       <h3 className="text-lg font-medium text-gray-900">Select your answer:</h3>
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      {poll.options.map((option: PollOption) => (
+    {/* Ensure options is always an array - upstream pages should normalize this
+      but guard here in case of missing relations from Supabase */}
+    {(poll.options || []).map((option: PollOption) => (
         <label
           key={option.id}
           className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${

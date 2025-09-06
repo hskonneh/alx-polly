@@ -3,12 +3,25 @@ import SocialShareButtons from '@/app/components/SocialShareButtons'
 import EmbedCodeCard from '@/app/components/EmbedCodeCard'
 import Link from 'next/link'
 
+/**
+ * SharePollPage (Server Component)
+ * -------------------------------
+ * Renders sharing utilities for a given poll: a QR code, social share
+ * buttons, and embeddable HTML. The page builds a canonical poll URL
+ * using NEXT_PUBLIC_API_URL when available, with a localhost fallback
+ * for local development.
+ *
+ * Note: Components used here are Client Components where necessary
+ * (QR code rendering, clipboard, and Web Share API interactions).
+ */
 export default async function SharePollPage({ 
   params 
 }: { 
   params: { id: string } 
 }) {
   const { id } = await params
+  // Build a fallback poll URL. CI/production should set NEXT_PUBLIC_API_URL
+  // to the canonical site URL.
   const pollUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/polls/${id}`
   
   return (
@@ -68,5 +81,5 @@ export default async function SharePollPage({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

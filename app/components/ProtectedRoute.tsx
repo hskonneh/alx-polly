@@ -9,17 +9,31 @@ interface ProtectedRouteProps {
   fallback?: React.ReactNode
 }
 
+/**
+ * ProtectedRoute
+ * --------------
+ * Client component wrapper used to guard UI that should only be visible
+ * to authenticated users. It relies on `useAuth` context to check
+ * authentication state and will redirect to `/auth/login` when no user is
+ * present.
+ *
+ * Where used:
+ * - Wrap pages or components that require a signed-in user (for example,
+ *   `app/polls/new/page.tsx` can render its form inside this wrapper).
+ */
 export default function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
   const { user, loading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
+    // When loading finishes, redirect to login if there's no user
     if (!loading && !user) {
       router.push('/auth/login')
     }
   }, [user, loading, router])
 
   if (loading) {
+    // Show a spinner while auth status is being determined
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
@@ -28,6 +42,7 @@ export default function ProtectedRoute({ children, fallback }: ProtectedRoutePro
   }
 
   if (!user) {
+    // When not authenticated, show a fallback UI or a simple Access Denied message
     return fallback || (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -44,5 +59,6 @@ export default function ProtectedRoute({ children, fallback }: ProtectedRoutePro
     )
   }
 
+  // Authenticated: render children
   return <>{children}</>
 }

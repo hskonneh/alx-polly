@@ -1,5 +1,17 @@
-'use client'
+ 'use client'
 
+/**
+ * VoteResult
+ * ----------
+ * Displays a list of poll options with vote counts and a visual progress
+ * bar (percentage). Expects the `options` prop to contain `percentage`
+ * already calculated (0-100). This component is typically used in the
+ * results page and accepts server-fetched data shaped by the server
+ * component.
+ *
+ * Where used:
+ * - `app/polls/[id]/results/page.tsx` to render poll outcomes.
+ */
 interface VoteOption {
   id: string
   text: string

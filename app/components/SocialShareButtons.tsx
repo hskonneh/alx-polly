@@ -1,6 +1,16 @@
 // File: /app/components/SocialShareButtons.tsx
 'use client'
 
+/**
+ * SocialShareButtons
+ * -------------------
+ * Small collection of social sharing buttons using `react-share`.
+ * Provides quick sharing to WhatsApp, Twitter, Facebook, and Email and
+ * also exposes a copy-to-clipboard fallback.
+ *
+ * Where used:
+ * - Poll share pages and modals where multiple sharing options are desired.
+ */
 import { useState } from 'react'
 import { 
   WhatsappShareButton, 
@@ -27,6 +37,7 @@ export default function SocialShareButtons({
   const socialButtonStyle = "rounded-full hover:opacity-80 transition-opacity"
   const iconSize = 40
 
+  // Simple clipboard fallback for copying the link
   const handleCopyLink = () => {
     navigator.clipboard.writeText(pollUrl)
     setCopied(true)
@@ -44,7 +55,7 @@ export default function SocialShareButtons({
           <TwitterIcon size={iconSize} round className={socialButtonStyle} />
         </TwitterShareButton>
 
-        <FacebookShareButton url={pollUrl} quote={title}>
+  <FacebookShareButton url={pollUrl} title={title}>
           <FacebookIcon size={iconSize} round className={socialButtonStyle} />
         </FacebookShareButton>
 
@@ -58,10 +69,13 @@ export default function SocialShareButtons({
       </div>
 
       <div className="items-center space-x-2 space-y-5">
+        <label htmlFor="share-link" className="sr-only">Share link</label>
         <input
+          id="share-link"
           type="text"
           value={pollUrl}
           readOnly
+          aria-label="Shareable poll link"
           className="mx-auto block flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50 text-gray-800"
         />
         <button 

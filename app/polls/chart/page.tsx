@@ -4,6 +4,15 @@ import Link from 'next/link'
 import { Button } from '@/app/components/ui/button'
 import { PollOption } from '@/lib/types'
 
+/**
+ * PollsChartPage (Server Component)
+ * -------------------------------
+ * Retrieves all polls and their related poll_options, normalizes the
+ * payload into a typed shape, and renders a chart preview for each poll.
+ *
+ * Defensive mapping is used because Supabase's relational selects can
+ * return varying field names and optional fields depending on the query.
+ */
 interface ChartPoll {
   id: string
   title: string
@@ -33,24 +42,20 @@ export default async function PollsChartPage() {
     }
 
     // Format data for each poll with proper typing
-    // Notes:
-    // - Supabase returns nested objects for relationships (poll_options).
-    // - We defensively map the nested options to the PollOption shape used
-    //   by the chart component to avoid runtime undefined errors.
-    const pollsWithData: ChartPoll[] = polls.map(poll => {
-      const options = (poll.poll_options || []).map((opt: any): PollOption => ({
-        id: opt.id,
-        text: opt.option_text || '',
-        votes: opt.votes || 0,
+    const pollsWithData: ChartPoll[] = polls.map((poll: any) => {
+      const options: PollOption[] = (poll.poll_options || []).map((opt: any) => ({
+        id: String(opt.id),
+        text: String(opt.option_text || opt.text || ''),
+        votes: Number(opt.votes || 0),
       }))
 
       // Sum votes with explicit numeric guards to avoid NaN from undefined
       const totalVotes = options.reduce((sum: number, opt: PollOption) => sum + (opt.votes || 0), 0)
 
       return {
-        id: poll.id,
-        title: poll.title || '',
-        isActive: poll.is_active || false,
+        id: String(poll.id),
+        title: String(poll.title || ''),
+        isActive: Boolean(poll.is_active || false),
         options,
         totalVotes
       }

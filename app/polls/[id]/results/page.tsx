@@ -6,6 +6,17 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { notFound } from 'next/navigation'
 import { PollOption } from '@/lib/types'
 
+/**
+ * PollResultsPage (Server Component)
+ * ----------------------------------
+ * Retrieves a single poll and its related options, computes vote
+ * percentages, and renders both a list view and chart.
+ *
+ * Important notes:
+ * - The Supabase relation is selected as `options:poll_options(*)` and then
+ *   normalized into the `PollOption` shape expected by the UI components.
+ * - Percentages are computed defensively (guarding division by zero).
+ */
 export default async function PollResultsPage({ params }: { params: { id: string } }) {
   const { id } = await params
   const supabase = await createServerSupabaseClient()
@@ -21,16 +32,23 @@ export default async function PollResultsPage({ params }: { params: { id: string
     notFound()
   }
 
-  const normalizedOptions: PollOption[] = (poll.options || []).map((o: any) => ({
-    id: o.id,
-    text: (o.option_text || o.text || '').toString(),
-    votes: typeof o.votes === 'number' ? o.votes : 0,
-    percentage: 0,
+  // Normalize options to the UI-friendly PollOption type. Supabase returns
+  // relation rows which may have different field names depending on the
+  // select clause, so normalize keys here.
+  // Build an array shaped exactly as VoteResult expects. We use `any` from
+  // the DB payload but coerce fields to concrete types to satisfy the
+  // client component's props and avoid TS optional-undef issues.
+  const normalizedOptions = (poll.options || []).map((o: any) => ({
+    id: String(o.id),
+    text: String(o.option_text || o.text || ''),
+    votes: Number(o.votes || 0),
+    percentage: 0 as number,
   }))
 
-  const totalVotes = normalizedOptions.reduce((sum, option) => sum + (option.votes || 0), 0)
+  const totalVotes = normalizedOptions.reduce((sum: number, option: { votes: number }) => sum + (option.votes || 0), 0)
 
-  const optionsWithPercentage = normalizedOptions.map((option) => ({
+  // Compute percentages; guard against division by zero.
+  const optionsWithPercentage = normalizedOptions.map((option: { votes: number; percentage: number }) => ({
     ...option,
     percentage: totalVotes === 0 ? 0 : (option.votes / totalVotes) * 100,
   }))

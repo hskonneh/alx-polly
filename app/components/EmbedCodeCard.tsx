@@ -1,12 +1,29 @@
 'use client'
 
+/**
+ * EmbedCodeCard
+ * ----------------
+ * Presents a small UI that shows an embeddable iframe snippet for a poll URL
+ * and allows the user to copy it to the clipboard. This component is a
+ * client component because it uses the Clipboard API.
+ *
+ * Where used:
+ * - In poll sharing pages (e.g. `app/polls/[id]/share/page.tsx`) to let users
+ *   embed the poll on external websites.
+ *
+ * Props:
+ * - `pollUrl` (string): public URL to the poll to embed.
+ */
 interface EmbedCodeCardProps {
   pollUrl: string
 }
 
 export default function EmbedCodeCard({ pollUrl }: EmbedCodeCardProps) {
+  // Pre-built iframe snippet that users can paste into a website's HTML.
   const embedCode = `<iframe src="${pollUrl}" width="100%" height="500" frameBorder="0" style="border:none;"></iframe>`
 
+  // Copy embed code to clipboard. Silent success is acceptable here because
+  // the UI shows the code and users can manually copy as a fallback.
   const handleCopy = () => {
     navigator.clipboard.writeText(embedCode)
   }

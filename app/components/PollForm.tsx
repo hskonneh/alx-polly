@@ -5,7 +5,19 @@ import { useRouter } from "next/navigation";
 import { Poll } from "@/lib/types";
 import { Button } from "./ui/button";
 
+/**
+ * PollForm
+ * ----------
+ * Client-side form component used to collect poll title and options.
+ * It accepts a `createPollAction` function (typically a Next.js Server Action)
+ * that performs the actual insertion on the server. This keeps the UI
+ * responsive while delegating persistence and validation to the server.
+ *
+ * Where used:
+ * - `app/polls/new/page.tsx` renders this component and passes a server action.
+ */
 interface PollFormProps {
+  // Server action that accepts FormData and returns the created Poll
   createPollAction: (formData: FormData) => Promise<Poll>;
 }
 

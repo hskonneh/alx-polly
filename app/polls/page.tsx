@@ -3,6 +3,18 @@ import { Button } from '@/app/components/ui/button'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { Poll } from '@/lib/types'
 
+/**
+ * PollsPage (Server Component)
+ * ----------------------------
+ * Lists all polls from the database and shows action links to view, vote,
+ * or see results. This page performs server-side data fetching with the
+ * Supabase server client so it renders with fresh data on each request.
+ *
+ * Where used:
+ * - URL: `/polls`
+ * - Used by contributors to see available polls and navigate to create/new
+ *   poll flows or analytics.
+ */
 export default async function PollsPage() {
   const supabase = await createServerSupabaseClient()
   const { data: polls, error } = await supabase.from('polls').select('*')
@@ -42,6 +54,7 @@ export default async function PollsPage() {
               </div>
               
               <div className="text-sm text-gray-600 mb-4">
+                {/* totalVotes can be stored on poll or computed elsewhere; guard with fallback */}
                 <p>{(poll as any).totalVotes || 0} votes</p>
                 <p>Created {new Date((poll as any).createdAt || (poll as any).created_at).toLocaleDateString()}</p>
               </div>

@@ -12,6 +12,17 @@ interface QRCodeCardProps {
   title?: string
 }
 
+/**
+ * QRCodeCard
+ * ----------
+ * Generates and displays a QR code for a poll URL. It uses the
+ * `generateQRCode` helper (which returns a data URL) and renders the
+ * resulting image via Next.js `Image` component.
+ *
+ * Where used:
+ * - Poll sharing page: `app/polls/[id]/share/page.tsx` to allow users to
+ *   download or share the QR code image.
+ */
 export default function QRCodeCard({ 
   pollId, 
   pollUrl, 
@@ -21,6 +32,8 @@ export default function QRCodeCard({
   const [error, setError] = useState<string>('')
 
   useEffect(() => {
+    // Generate a QR code data URL when pollUrl changes. This is an async
+    // one-time side-effect for this component instance.
     async function fetchQRCode() {
       try {
         setError('')
@@ -38,6 +51,7 @@ export default function QRCodeCard({
     fetchQRCode()
   }, [pollUrl])
 
+  // Allow downloading the generated data URL as a PNG file
   const handleQRCodedownload = () => {
     if (!qrCodeDataUrl) return
 

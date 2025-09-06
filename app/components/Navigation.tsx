@@ -1,5 +1,20 @@
 'use client'
 
+/**
+ * Navigation
+ * ----------
+ * Top navigation bar for the app. Shows different links depending on
+ * authentication state. Uses `useAuth` context to access `user`, `loading`,
+ * and `signOut` helpers.
+ *
+ * Where used:
+ * - Imported into the root layout (`app/layout.tsx`) so it appears on every page.
+ *
+ * Behavior notes:
+ * - While `loading` is true the component renders a skeleton state.
+ * - When `user` is present it shows a welcome message and a Sign Out button.
+ * - When no `user` it shows Sign In / Sign Up actions.
+ */
 import Link from 'next/link'
 import { useAuth } from '@/app/contexts/AuthContext'
 import { Button } from '@/app/components/ui/button'
@@ -7,11 +22,13 @@ import { Button } from '@/app/components/ui/button'
 export default function Navigation() {
   const { user, signOut, loading } = useAuth()
 
+  // Sign out action delegates to AuthContext which talks to Supabase
   const handleSignOut = async () => {
     await signOut()
   }
 
   if (loading) {
+    // Minimal skeleton while auth state is determined
     return (
       <nav className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
