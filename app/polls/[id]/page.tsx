@@ -4,6 +4,7 @@ import { Button } from '@/app/components/ui/button'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { deletePoll } from '@/lib/actions/deletePoll'
+import { togglePollStatus } from '@/lib/actions/togglePollStatus'
 import PollVoteForm from './PollVoteForm' // New Client Component for voting
 
 interface PollPageProps {
@@ -25,6 +26,11 @@ export default async function PollPage({ params }: PollPageProps) {
     notFound()
   }
 
+  // get current server-side user to check if they're the creator
+  const { data: userData } = await supabase.auth.getUser()
+  const user = userData?.user
+  const isCreator = !!user && poll.creator_id === user.id
+
   // normalize options: poll_options have 'option_text'
   const normalizedOptions: PollOption[] = (poll.options || []).map((o: any) => ({
     id: o.id,
@@ -38,6 +44,11 @@ export default async function PollPage({ params }: PollPageProps) {
     'use server'
     await deletePoll(id)
     redirect('/polls')
+  }
+
+  const toggleStatusAction = async (formData: FormData) => {
+    'use server'
+    await togglePollStatus(formData)
   }
 
   return (
@@ -80,11 +91,21 @@ export default async function PollPage({ params }: PollPageProps) {
               <Button variant="outline">View Results</Button>
             </Link>
             <Link href={`/polls/${poll.id}/share`}>
-              <Button variant="outline">Share Poll</Button>
+              <Button variant="outline" className='bg-blue-500 hover:bg-blue-300 text-white font-bold rounded shadow-lg hover:shadow-2xl transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50'>Share Poll</Button>
             </Link>
-            <form action={deletePollWithId}>
-              <Button variant="destructive" type="submit">Delete Poll</Button>
-            </form>
+            {isCreator && (
+              <>
+                <form action={deletePollWithId}>
+                  <Button variant="destructive" className='text-gray-800 hover:cursor-pointer hover:text-red-400' type="submit">Delete Poll</Button>
+                </form>
+                {/* Toggle Open/Close - server action will verify ownership */}
+                <form action={toggleStatusAction}>
+                  <input type="hidden" name="id" value={poll.id} />
+                  <input type="hidden" name="isActive" value={String(!!poll.isActive)} />
+                  <Button type="submit" className='text-gray-800 hover:cursor-pointer hover:text-green-400'>{poll.isActive ? 'Close Poll' : 'Open Poll'}</Button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </div>

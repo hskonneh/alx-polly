@@ -27,17 +27,17 @@ export default async function PollsPage() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {(polls as Poll[]).map((poll) => (
-            <div key={poll.id} className="bg-white rounded-lg shadow-md p-6">
+            <div key={poll.id} className="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition duration-200 ease-in-out">
               <div className="flex justify-between items-start mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
                   {poll.title}
                 </h3>
                 <span className={`px-2 py-1 text-xs rounded-full ${
-                  poll.isActive 
+                  (poll as any).is_active || (poll as any).isActive
                     ? 'bg-green-100 text-green-800' 
                     : 'bg-gray-100 text-gray-800'
                 }`}>
-                  {poll.isActive ? 'Active' : 'Closed'}
+                  {(poll as any).is_active || (poll as any).isActive ? 'Active' : 'Closed'}
                 </span>
               </div>
               
@@ -48,7 +48,7 @@ export default async function PollsPage() {
               
               <div className="flex gap-2">
                 <Link href={`/polls/${poll.id}`} className="flex-1">
-                  <Button variant="outline" className="w-full ">
+                  <Button variant="outline" className="w-full bg-emerald-500 hover:bg-emerald-300 text-white font-bold rounded hover:shadow-2xl transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50" >
                     View Poll
                   </Button>
                 </Link>

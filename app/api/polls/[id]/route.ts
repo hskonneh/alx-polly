@@ -13,6 +13,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     if (error || !poll) {
       return NextResponse.json({ error: 'Poll not found' }, { status: 404 });
     }
+    // normalize DB column is_active -> isActive for client
+    if (poll && Object.prototype.hasOwnProperty.call(poll, 'is_active')) {
+      // @ts-ignore
+      poll.isActive = poll.is_active
+    }
     return NextResponse.json({ poll });
   } catch (error) {
     console.error('Error fetching poll:', error);
@@ -27,15 +32,19 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const body = await request.json();
     // You can update title, isActive, or options
     const { title, isActive, options } = body;
-    // Update poll main fields
+    // Update poll main fields (map isActive -> is_active)
     const { data: poll, error: pollError } = await supabase
       .from('polls')
-      .update({ title, isActive })
+      .update({ title, is_active: isActive })
       .eq('id', id)
       .select()
       .single();
     if (pollError || !poll) {
       return NextResponse.json({ error: 'Poll not found or update failed' }, { status: 404 });
+    }
+    if (poll && Object.prototype.hasOwnProperty.call(poll, 'is_active')) {
+      // @ts-ignore
+      poll.isActive = poll.is_active
     }
     // Optionally update poll options
     if (Array.isArray(options)) {

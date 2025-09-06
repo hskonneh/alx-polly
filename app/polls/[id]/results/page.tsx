@@ -82,7 +82,7 @@ export default async function PollResultsPage({ params }: { params: { id: string
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
             <div className="space-y-3">
               <Link href={`/polls/${id}/share`} className="block">
-                <Button className="w-full">Share Results</Button>
+                <Button className="w-full text-gray-700 hover:cursor-pointer hover:text-blue-500">Share Results</Button>
               </Link>
               <Link href={`/polls/${id}`} className="block">
                 <Button variant="outline" className="w-full">View Poll</Button>
