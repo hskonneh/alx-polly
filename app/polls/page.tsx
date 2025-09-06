@@ -71,6 +71,16 @@ export default async function PollsPage() {
             </Link>
           </div>
         )}
+
+        {polls && polls.length > 0 && (
+          <div className="flex justify-start mt-8">
+            <Link href="/polls/chart">
+              <Button variant="outline" className="text-blue-600 hover:text-blue-700">
+                View All Polls Chart
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

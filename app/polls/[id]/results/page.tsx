@@ -1,4 +1,5 @@
 import VoteResult from '@/app/components/VoteResult'
+import PollResultChart from '@/app/components/PollResultChart'
 import Link from 'next/link'
 import { Button } from '@/app/components/ui/button'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
@@ -58,6 +59,17 @@ export default async function PollResultsPage({ params }: { params: { id: string
           options={optionsWithPercentage}
           totalVotes={totalVotes}
         />
+
+        <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Vote Distribution</h3>
+          <div className="h-[400px]">
+            <PollResultChart
+              question={poll.title || poll.question}
+              options={optionsWithPercentage}
+              totalVotes={totalVotes}
+            />
+          </div>
+        </div>
 
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           <div className="bg-white rounded-lg shadow-md p-6">
