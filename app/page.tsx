@@ -7,15 +7,16 @@ export default function Home() {
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <div className="text-center sm:text-left">
-          <h1 className="text-4xl font-bold text-white-200 mb-4">
-            ALX Polling Application
-          </h1>
+          <h4 className="text-3xl font-bold text-white mb-4">
+            Welcome to <span className="text-7xl">PollPall!</span>
+          </h4>
+
           <p className="text-xl text-gray-600 mb-8">
             Create and share polls with ease
           </p>
         </div>
 
-        <div className="flex flex-col gap-4 items-center sm:items-start">
+        {/* <div className="flex flex-col gap-4 items-center sm:items-start">
           <h2 className="text-lg font-semibold text-gray-900">Get Started</h2>
           <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left space-y-2">
             <li className="tracking-[-.01em]">
@@ -41,30 +42,30 @@ export default function Home() {
               Developer Hassan S. Konneh. 😎✌🏽
             </li>
           </ol>
-        </div>
+        </div> */}
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <Link href="/polls">
-            <Button className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto">
-              <Image
-                className="dark:invert"
+            <Button className="hover:cursor-pointer rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto">
+              {/* <Image
+                className="dark:invert hover:cursor-pointer"
                 src="/next.svg"
                 alt="Next.js logomark"
                 width={20}
                 height={20}
-              />
+              /> */}
               View Polls
             </Button>
           </Link>
           <Link href="/polls/new">
-            <Button variant="outline" className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]">
+            <Button variant="outline" className="hover:cursor-pointer rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]">
               Create Poll
             </Button>
           </Link>
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <Link
+        {/* <Link
           className="hover:underline flex items-center gap-2 hover:underline-offset-4 hover:text-blue-400"
           href="/polls"
         >
@@ -76,8 +77,8 @@ export default function Home() {
             height={16}
           />
           Polls
-        </Link>
-        <Link
+        </Link> */}
+        {/* <Link
           className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:text-blue-400"
           href="/auth/login"
         >
@@ -89,8 +90,8 @@ export default function Home() {
             height={16}
           />
           Sign In
-        </Link>
-        <Link
+        </Link> */}
+        {/* <Link
           className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:text-blue-400"
           href="/auth/register"
         >
@@ -102,7 +103,10 @@ export default function Home() {
             height={16}
           />
           Register →
-        </Link>
+        </Link> */}
+        <div>
+          <h5 className='text-amber-300'> Developed by Hassan S. Konneh</h5>
+        </div>
       </footer>
     </div>
   );
