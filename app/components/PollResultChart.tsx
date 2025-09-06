@@ -10,6 +10,15 @@ interface PollResultChartProps {
   totalVotes: number
 }
 
+/**
+ * PollResultChart
+ * Renders a bar chart using Chart.js for the provided poll options.
+ *
+ * Notes:
+ * - This is a client component because Chart.js depends on the DOM.
+ * - We explicitly destroy the previous chart instance before creating a
+ *   new one to avoid memory leaks and duplicated canvases.
+ */
 const PollResultChart: React.FC<PollResultChartProps> = ({ question, options, totalVotes }) => {
   const chartRef = useRef<HTMLCanvasElement>(null)
   const chartInstanceRef = useRef<Chart | null>(null)
@@ -17,26 +26,26 @@ const PollResultChart: React.FC<PollResultChartProps> = ({ question, options, to
   useEffect(() => {
     if (!chartRef.current) return
 
-    // Destroy existing chart if it exists
+    // Destroy existing chart if it exists to ensure a clean state
     if (chartInstanceRef.current) {
       chartInstanceRef.current.destroy()
     }
 
-    // Create new chart
+    // Acquire the 2D rendering context; bail out if unavailable
     const ctx = chartRef.current.getContext('2d')
     if (!ctx) return
 
-    // Ensure data is defined
-    const data = options.map(opt => opt.votes || 0)
-    const labels = options.map(opt => opt.text)
+    // Defensive mapping: ensure each option has numeric votes and a label
+    const labels = options.map(opt => opt.text || '')
+    const dataValues = options.map(opt => opt.votes || 0)
 
     chartInstanceRef.current = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: options.map(opt => opt.text || ''),
+        labels,
         datasets: [{
           label: 'Votes',
-          data: options.map(opt => opt.votes || 0),
+          data: dataValues,
           backgroundColor: [
             'rgba(54, 162, 235, 0.6)',
             'rgba(255, 99, 132, 0.6)',
@@ -73,6 +82,7 @@ const PollResultChart: React.FC<PollResultChartProps> = ({ question, options, to
           y: {
             beginAtZero: true,
             ticks: {
+              // Force integer steps for vote counts
               stepSize: 1,
               precision: 0
             }
@@ -81,6 +91,7 @@ const PollResultChart: React.FC<PollResultChartProps> = ({ question, options, to
       }
     })
 
+    // Cleanup: destroy chart instance when component unmounts or deps change
     return () => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy()

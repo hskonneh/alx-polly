@@ -33,15 +33,20 @@ export default async function PollsChartPage() {
     }
 
     // Format data for each poll with proper typing
+    // Notes:
+    // - Supabase returns nested objects for relationships (poll_options).
+    // - We defensively map the nested options to the PollOption shape used
+    //   by the chart component to avoid runtime undefined errors.
     const pollsWithData: ChartPoll[] = polls.map(poll => {
       const options = (poll.poll_options || []).map((opt: any): PollOption => ({
         id: opt.id,
         text: opt.option_text || '',
         votes: opt.votes || 0,
       }))
-      
+
+      // Sum votes with explicit numeric guards to avoid NaN from undefined
       const totalVotes = options.reduce((sum: number, opt: PollOption) => sum + (opt.votes || 0), 0)
-      
+
       return {
         id: poll.id,
         title: poll.title || '',
