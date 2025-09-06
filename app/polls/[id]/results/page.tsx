@@ -1,22 +1,42 @@
 import VoteResult from '@/app/components/VoteResult'
 import Link from 'next/link'
 import { Button } from '@/app/components/ui/button'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { notFound } from 'next/navigation'
+import { PollOption } from '@/lib/types'
 
-// Mock data - replace with actual API call
-const mockPollResults = {
-  question: 'What is your favorite programming language?',
-  options: [
-    { id: '1', text: 'JavaScript', votes: 45, percentage: 28.8 },
-    { id: '2', text: 'Python', votes: 38, percentage: 24.4 },
-    { id: '3', text: 'TypeScript', votes: 32, percentage: 20.5 },
-    { id: '4', text: 'Java', votes: 25, percentage: 16.0 },
-    { id: '5', text: 'C++', votes: 16, percentage: 10.3 }
-  ],
-  totalVotes: 156
-}
-
-export default async function PollResultsPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function PollResultsPage({ params }: { params: { id: string } }) {
   const { id } = await params
+  const supabase = await createServerSupabaseClient()
+
+  const { data: poll, error } = await supabase
+    .from('polls')
+    .select('*, options:poll_options(*)') // Aliased poll_options to options
+    .eq('id', id)
+    .single()
+
+  if (error || !poll) {
+    console.error('Error fetching poll results:', error)
+    notFound()
+  }
+
+  const normalizedOptions: PollOption[] = (poll.options || []).map((o: any) => ({
+    id: o.id,
+    text: (o.option_text || o.text || '').toString(),
+    votes: typeof o.votes === 'number' ? o.votes : 0,
+    percentage: 0,
+  }))
+
+  const totalVotes = normalizedOptions.reduce((sum, option) => sum + (option.votes || 0), 0)
+
+  const optionsWithPercentage = normalizedOptions.map((option) => ({
+    ...option,
+    percentage: totalVotes === 0 ? 0 : (option.votes / totalVotes) * 100,
+  }))
+
+  // Sort options by votes in descending order for leading option display
+  const sortedOptions = [...optionsWithPercentage].sort((a, b) => (b.votes || 0) - (a.votes || 0))
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,9 +54,9 @@ export default async function PollResultsPage({ params }: { params: Promise<{ id
         </div>
 
         <VoteResult
-          question={mockPollResults.question}
-          options={mockPollResults.options}
-          totalVotes={mockPollResults.totalVotes}
+          question={poll.title || poll.question}
+          options={optionsWithPercentage}
+          totalVotes={totalVotes}
         />
 
         <div className="mt-8 grid gap-6 md:grid-cols-2">
@@ -45,15 +65,15 @@ export default async function PollResultsPage({ params }: { params: Promise<{ id
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">Total Votes:</span>
-                <span className="font-medium">{mockPollResults.totalVotes}</span>
+                <span className="font-medium">{totalVotes}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Options:</span>
-                <span className="font-medium">{mockPollResults.options.length}</span>
+                <span className="font-medium">{normalizedOptions.length}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Leading Option:</span>
-                <span className="font-medium">{mockPollResults.options[0].text}</span>
+                <span className="font-medium">{sortedOptions[0]?.text || 'N/A'}</span>
               </div>
             </div>
           </div>

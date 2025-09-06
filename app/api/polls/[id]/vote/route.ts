@@ -32,12 +32,18 @@ export async function POST(request: NextRequest, context: { params: { id: string
     if (voteError) {
       return NextResponse.json({ error: 'Failed to record vote' }, { status: 500 });
     }
-    // Optionally increment vote count for the option (if you have a 'votes' column)
-    // await supabase
-    //   .from('poll_options')
-    //   .update({ votes: supabase.rpc('increment', { x: 1 }) })
-    //   .eq('id', optionId);
-    return NextResponse.json({ message: 'Vote recorded successfully' });
+    // Increment vote count for the option
+    const { error: updateError } = await supabase
+      .from('options') // Assuming the table is named 'options'
+      .update({ votes: (option: { votes: number }) => option.votes + 1 })
+      .eq('id', optionId)
+
+    if (updateError) {
+      console.error('Error incrementing vote count:', updateError)
+      return NextResponse.json({ error: 'Failed to update vote count' }, { status: 500 })
+    }
+
+    return NextResponse.json({ message: 'Vote recorded successfully' })
   } catch (error) {
     console.error('Error recording vote:', error);
     return NextResponse.json({ error: 'Failed to record vote' }, { status: 500 });

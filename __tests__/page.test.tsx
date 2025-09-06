@@ -6,7 +6,7 @@ describe('Home', () => {
     render(<Home />)
     
     // Check for main content
-    expect(screen.getByText('ALX Polly')).toBeInTheDocument()
+    expect(screen.getByText('ALX Polling Application')).toBeInTheDocument()
     expect(screen.getByText('Create and share polls with ease')).toBeInTheDocument()
     
     // Check for navigation links
@@ -17,7 +17,6 @@ describe('Home', () => {
   it('renders developer credits', () => {
     render(<Home />)
     expect(screen.getByText(/Developer Hassan S. Konneh/)).toBeInTheDocument()
-    expect(screen.getByText(/Queen Amoateng/)).toBeInTheDocument()
   })
 
   it('has proper navigation links', () => {

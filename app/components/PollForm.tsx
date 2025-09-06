@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { Poll } from "@/lib/types";
 import { Button } from "./ui/button";
 
-export default function PollForm() {
+interface PollFormProps {
+  createPollAction: (formData: FormData) => Promise<Poll>;
+}
+
+export default function PollForm({ createPollAction }: PollFormProps) {
   const [title, setTitle] = useState("");
   const [options, setOptions] = useState<string[]>(["", ""]);
   const [loading, setLoading] = useState(false);
@@ -28,7 +32,7 @@ export default function PollForm() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Keep this for client-side validation before server action
     setLoading(true);
     setError(null);
 
@@ -41,20 +45,11 @@ export default function PollForm() {
     }
 
     try {
-      const response = await fetch("/api/polls", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, options: filteredOptions }),
-      });
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("options", JSON.stringify(filteredOptions));
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create poll.");
-      }
-
-      const newPoll: Poll = await response.json();
+      const newPoll = await createPollAction(formData);
       router.push(`/polls/${newPoll.id}`);
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred.");
