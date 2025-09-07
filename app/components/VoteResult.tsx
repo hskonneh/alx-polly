@@ -1,3 +1,5 @@
+import React from 'react'; // Ensure React is imported for React.memo
+
  'use client'
 
 /**
@@ -25,7 +27,7 @@ interface VoteResultProps {
   totalVotes: number
 }
 
-export default function VoteResult({ question, options, totalVotes }: VoteResultProps) {
+export default React.memo(function VoteResult({ question, options, totalVotes }: VoteResultProps) {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-gray-900">{question}</h2>
@@ -58,5 +60,5 @@ export default function VoteResult({ question, options, totalVotes }: VoteResult
         </div>
       </div>
     </div>
-  )
-}
+  );
+});
