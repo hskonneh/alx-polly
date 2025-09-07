@@ -42,7 +42,7 @@ export default function Home() {
               Developer Hassan S. Konneh. 😎✌🏽
             </li>
           </ol>
-        </div> */}
+        </div>  */}
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <Link href="/polls">
@@ -91,22 +91,18 @@ export default function Home() {
           />
           Sign In
         </Link> */}
-        {/* <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:text-blue-400"
-          href="/auth/register"
+        <p
+          className="flex items-center gap-2 no-underline text-shadow-cyan-200"         
         >
-          <Image
+          {/* <Image
             aria-hidden
             src="/globe.svg"
             alt="Globe icon"
             width={16}
             height={16}
-          />
-          Register →
-        </Link> */}
-        <div>
-          <h5 className='text-amber-300'> Developed by Hassan S. Konneh</h5>
-        </div>
+          /> */}
+          Developed by HS. Konneh.
+        </p>        
       </footer>
     </div>
   );
