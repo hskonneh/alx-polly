@@ -1,7 +1,7 @@
 ---
 description: Core rules, conventions, and architectural guidelines for the Polling App with QR Code Sharing project. This file is the single canonical guidance used by developers and automated agents to build, test, fix, and maintain the application.
 globs:
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Polling App — Standard Instructions, Procedures, and Processes
