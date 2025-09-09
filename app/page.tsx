@@ -4,105 +4,50 @@ import { Button } from "./components/ui/button";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <div className="text-center sm:text-left">
-          <h4 className="text-3xl font-bold text-white mb-4">
-            Welcome to <span className="text-7xl">PollPall!</span>
-          </h4>
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4 sm:p-8">
+      {/* Optional: Add a subtle background pattern or image here */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <Image
+          src="/next.svg" // Replace with a more suitable background image if available
+          alt="Background Pattern"
+          layout="fill"
+          objectFit="cover"
+          className="pointer-events-none"
+        />
+      </div>
 
-          <p className="text-xl text-gray-600 mb-8">
-            Create and share polls with ease
+      <main className="relative z-10 flex flex-col items-center justify-center text-center max-w-4xl mx-auto py-16 px-6 sm:px-10 bg-white/20 backdrop-blur-md rounded-xl shadow-2xl border border-white/30">
+        <div className="mb-8">
+          <h1 className="text-5xl sm:text-7xl font-extrabold text-white leading-tight mb-4">
+            Welcome to{" "}
+            <span className="text-yellow-200 drop-shadow-lg">PollPall!</span>
+          </h1>
+          <p className="text-xl sm:text-2xl text-white font-light">
+            Create, share, and analyze polls with unparalleled ease and insight.
           </p>
         </div>
 
-        {/* <div className="flex flex-col gap-4 items-center sm:items-start">
-          <h2 className="text-lg font-semibold text-gray-900">Get Started</h2>
-          <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left space-y-2">
-            <li className="tracking-[-.01em]">
-              <Link href="/auth/login" className="text-blue-600 hover:text-blue-500">
-                Sign in
-              </Link>{" "}
-              or{" "}
-              <Link href="/auth/register" className="text-blue-600 hover:text-blue-500">
-                create an account
-              </Link>
-            </li>
-            <li className="tracking-[-.01em]">
-              <Link href="/polls" className="text-blue-600 hover:text-blue-500">
-                Browse existing polls
-              </Link>
-            </li>
-            <li className="tracking-[-.01em]">
-              <Link href="/polls/new" className="text-blue-600 hover:text-blue-500">
-                Create your first poll
-              </Link>
-            </li>
-            <li className="tracking-[-.01em]">
-              Developer Hassan S. Konneh. 😎✌🏽
-            </li>
-          </ol>
-        </div>  */}
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <Link href="/polls">
-            <Button className="hover:cursor-pointer rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto">
-              {/* <Image
-                className="dark:invert hover:cursor-pointer"
-                src="/next.svg"
-                alt="Next.js logomark"
-                width={20}
-                height={20}
-              /> */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-8">
+          <Link href="/polls" passHref>
+            <Button className="h-12 px-8 text-lg font-semibold rounded-full bg-yellow-400 hover:bg-yellow-500 text-purple-800 shadow-lg transition-all duration-300 transform hover:scale-105">
               View Polls
             </Button>
           </Link>
-          <Link href="/polls/new">
-            <Button variant="outline" className="hover:cursor-pointer rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]">
+          <Link href="/polls/new" passHref>
+            <Button
+              variant="outline"
+              className="h-12 px-8 text-lg font-semibold rounded-full border-2 border-yellow-400 text-white bg-transparent hover:bg-yellow-400 hover:text-purple-800 shadow-lg transition-all duration-300 transform hover:scale-105"
+            >
               Create Poll
             </Button>
           </Link>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        {/* <Link
-          className="hover:underline flex items-center gap-2 hover:underline-offset-4 hover:text-blue-400"
-          href="/polls"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Polls
-        </Link> */}
-        {/* <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:text-blue-400"
-          href="/auth/login"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Sign In
-        </Link> */}
-        <p
-          className="flex items-center gap-2 no-underline text-shadow-cyan-200"         
-        >
-          {/* <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          /> */}
+
+      <footer className="relative z-10 mt-12 text-center text-white text-sm">
+        <p className="flex items-center gap-2 no-underline text-shadow-cyan-200">
           Developed by HS. Konneh.
-        </p>        
+        </p>
       </footer>
     </div>
   );

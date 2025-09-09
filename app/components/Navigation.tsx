@@ -30,16 +30,16 @@ export default function Navigation() {
   if (loading) {
     // Minimal skeleton while auth state is determined
     return (
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg border-b border-blue-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <Link href="/" className="text-xl font-bold text-gray-900">
-                ALX Polly
+              <Link href="/" className="text-xl font-bold text-white">
+                PollPall
               </Link>
             </div>
             <div className="flex items-center">
-              <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>
+              <div className="animate-pulse bg-blue-300 h-8 w-20 rounded"></div>
             </div>
           </div>
         </div>
@@ -48,24 +48,24 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="bg-white shadow-sm border-b">
+    <nav className="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg border-b border-blue-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
+            <Link href="/" className="text-xl font-bold text-white">
               PollPall
             </Link>
             <div className="ml-10 flex items-baseline space-x-4">
               <Link
                 href="/polls"
-                className="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                className="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 Polls
               </Link>
               {user && (
                 <Link
                   href="/polls/new"
-                  className="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                  className="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                 >
                   Create Poll
                 </Link>
@@ -76,13 +76,13 @@ export default function Navigation() {
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-blue-100">
                   Welcome, {user.email}
                 </span>
                 <Button
                   onClick={handleSignOut}
                   variant="outline"
-                  className="text-sm cursor-pointer"
+                  className="text-sm cursor-pointer border-blue-300 text-blue-100 hover:bg-blue-400 hover:text-white transition-colors duration-200"
                 >
                   Sign Out
                 </Button>
@@ -90,12 +90,12 @@ export default function Navigation() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link href="/auth/login">
-                  <Button variant="ghost" className="text-sm text-gray-700 cursor-pointer">
+                  <Button variant="ghost" className="text-sm text-blue-100 cursor-pointer hover:bg-blue-400 hover:text-white transition-colors duration-200">
                     Sign In
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button className="text-sm text-gray-700 cursor-pointer">
+                  <Button className="text-sm text-white cursor-pointer bg-blue-400 hover:bg-blue-500 transition-colors duration-200">
                     Sign Up
                   </Button>
                 </Link>
