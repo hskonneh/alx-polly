@@ -29,14 +29,14 @@ export default function Home() {
 
         <div className="flex flex-col sm:flex-row gap-4 mt-8">
           <Link href="/polls" passHref>
-            <Button className="h-12 px-8 text-lg font-semibold rounded-full bg-yellow-400 hover:bg-yellow-500 text-purple-800 shadow-lg transition-all duration-300 transform hover:scale-105">
+            <Button className="h-12 px-8 text-lg font-semibold rounded-full bg-yellow-400 hover:bg-yellow-500 text-purple-800 shadow-lg transition-all duration-300 transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-yellow-500">
               View Polls
             </Button>
           </Link>
           <Link href="/polls/new" passHref>
             <Button
               variant="outline"
-              className="h-12 px-8 text-lg font-semibold rounded-full border-2 border-yellow-400 text-white bg-transparent hover:bg-yellow-400 hover:text-purple-800 shadow-lg transition-all duration-300 transform hover:scale-105"
+              className="h-12 px-8 text-lg font-semibold rounded-full border-2 border-yellow-400 text-white bg-transparent hover:bg-yellow-400 hover:text-purple-800 shadow-lg transition-all duration-300 transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-yellow-500"
             >
               Create Poll
             </Button>

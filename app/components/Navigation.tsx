@@ -24,7 +24,13 @@ export default function Navigation() {
 
   // Sign out action delegates to AuthContext which talks to Supabase
   const handleSignOut = async () => {
-    await signOut()
+    try {
+      await signOut()
+    } catch (error) {
+      console.error('Error signing out:', error)
+      // TODO: Implement a toast notification or other user feedback mechanism
+      alert('Failed to sign out. Please try again.')
+    }
   }
 
   if (loading) {
@@ -58,14 +64,14 @@ export default function Navigation() {
             <div className="ml-10 flex items-baseline space-x-4">
               <Link
                 href="/polls"
-                className="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                className="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600"
               >
                 Polls
               </Link>
               {user && (
                 <Link
                   href="/polls/new"
-                  className="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  className="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600"
                 >
                   Create Poll
                 </Link>
