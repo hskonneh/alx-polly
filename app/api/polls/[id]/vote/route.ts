@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 
 export async function POST(request: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
+  const { id: poll_id } = context.params;
   const supabase = await createServerSupabaseClient();
   try {
     const body = await request.json();
@@ -10,42 +10,43 @@ export async function POST(request: NextRequest, context: { params: { id: string
     if (!optionId) {
       return NextResponse.json({ error: 'Option ID is required' }, { status: 400 });
     }
-    // Get user ID if authenticated
+
     const { data: { user } } = await supabase.auth.getUser();
     const userId = user?.id || null;
-    // Prevent duplicate votes per user per poll
+
     if (userId) {
-      const { data: existingVote } = await supabase
+      const { data: existingVote, error: existingVoteError } = await supabase
         .from('votes')
         .select()
-        .eq('poll_id', id)
+        .eq('poll_id', poll_id)
         .eq('user_id', userId)
         .single();
+
       if (existingVote) {
         return NextResponse.json({ error: 'You have already voted on this poll' }, { status: 400 });
       }
+      if (existingVoteError && existingVoteError.code !== 'PGRST116') { // PGRST116 = no rows found
+        throw existingVoteError;
+      }
     }
-    // Insert vote
+
     const { error: voteError } = await supabase
       .from('votes')
-      .insert({ poll_id: id, option_id: optionId, user_id: userId });
+      .insert({ poll_id: poll_id, option_id: optionId, user_id: userId });
+
     if (voteError) {
-      return NextResponse.json({ error: 'Failed to record vote' }, { status: 500 });
-    }
-    // Increment vote count for the option
-    const { error: updateError } = await supabase
-      .from('options') // Assuming the table is named 'options'
-      .update({ votes: (option: { votes: number }) => option.votes + 1 })
-      .eq('id', optionId)
-
-    if (updateError) {
-      console.error('Error incrementing vote count:', updateError)
-      return NextResponse.json({ error: 'Failed to update vote count' }, { status: 500 })
+      throw voteError;
     }
 
-    return NextResponse.json({ message: 'Vote recorded successfully' })
-  } catch (error) {
+    const { error: rpcError } = await supabase.rpc('increment_vote_count', { option_id_param: optionId });
+
+    if (rpcError) {
+      throw rpcError;
+    }
+
+    return NextResponse.json({ message: 'Vote recorded successfully' });
+  } catch (error: any) {
     console.error('Error recording vote:', error);
-    return NextResponse.json({ error: 'Failed to record vote' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Failed to record vote' }, { status: 500 });
   }
 }
