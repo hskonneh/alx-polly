@@ -81,8 +81,7 @@ export default function Navigation() {
                 </span>
                 <Button
                   onClick={handleSignOut}
-                  variant="outline"
-                  className="text-sm cursor-pointer"
+                  className="text-sm cursor-pointer bg-gray-800 text-white hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2 transition-colors duration-200"
                 >
                   Sign Out
                 </Button>
