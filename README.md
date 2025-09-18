@@ -2,25 +2,117 @@
 
 A modern Next.js polling application built with TypeScript, Tailwind CSS, and comprehensive testing setup.
 
+## Table of Contents
+
+- [Project Scope](#-project-scope)
+- [Features](#-features)
+- [AI Integration](#-ai-integration)
+- [User Role Management](#-user-role-management)
+- [Poll Result Charts](#-poll-result-charts)
+- [Email Notification System on Signup](#-email-notification-system-on-signup)
+- [Prerequisites](#-prerequisites)
+- [Supabase (Optional but Recommended)](#️-supabase-optional-but-recommended)
+- [Installation](#️-installation)
+- [Development](#-development)
+- [Testing](#-testing)
+- [API Endpoints](#-api-endpoints)
+- [Project Structure](#-project-structure)
+- [Annotated File/Folder Reference](#-annotated-filefolder-reference)
+- [Core Functions (What they do)](#️-core-functions-what-they-do)
+- [Notes for Contributors](#-notes-for-contributors)
+- [Environment Variables](#-environment-variables)
+- [Deployment](#-deployment)
+- [Security Considerations](#-security-considerations)
+- [Performance](#-performance)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Support](#-support)
+- [Upcoming Features](#-upcoming-features)
+
+## 🎯 Project Scope
+
+The ALX Polly application aims to provide a robust and user-friendly platform for creating, sharing, and managing polls. Its core functionalities revolve around:
+- **User Management**: Secure registration, login, and session management for poll creators.
+- **Poll Lifecycle**: Comprehensive features for creating, updating, activating/deactivating, and deleting polls.
+- **Interactive Voting**: A straightforward system for users to cast votes on active polls.
+- **Real-time Results**: Instantaneous display of poll outcomes, enhancing user engagement.
+- **Shareability**: Easy distribution of polls via unique links and QR codes.
+- **Scalability**: Built on a modern stack capable of handling a growing number of users and polls.
+
+### Schema or API-aware Development
+AI tools are integrated to facilitate schema and API-aware development by:
+- **Validating API Contracts**: Ensuring that API requests and responses conform to the defined OpenAPI specification.
+- **Generating API Clients/Stubs**: Automatically generating client-side code or server stubs from API schemas, reducing manual effort and potential errors.
+- **Suggesting Database Migrations**: Proposing database schema changes based on application requirements and data model evolution.
+
 ## 🚀 Features
 
 - **Next.js 15.5.2** with App Router
 - **React 19.1.0** with TypeScript
 - **Tailwind CSS v4** for styling
 - **Jest & Testing Library** for comprehensive testing
-- **User Authentication** (login/register pages)
+- **User Authentication** (Supabase-powered login/register pages with JWTs)
 - **Poll Creation & Management** with dynamic forms
-- **Voting System** with real-time results
+- **Voting System** with real-time results (powered by Supabase subscriptions)
 - **QR Code Sharing** for easy poll distribution
 - **Responsive Design** with mobile-first approach
 - **Modern Development Tools** with hot reloading
+- **Database Integration** (PostgreSQL with Supabase)
+
+## 🤖 AI Integration
+
+This project leverages AI in several key development areas to enhance efficiency, quality, and developer experience:
+
+### Feature Generation
+AI assists in scaffolding new features by generating boilerplate code, suggesting component structures, and outlining implementation steps based on high-level requirements. This accelerates the initial development phase and ensures adherence to project conventions.
+
+### Testing
+AI plays a crucial role in augmenting the testing process. It can:
+- **Generate Test Cases**: Suggest comprehensive unit and integration test cases based on code logic and API specifications.
+- **Identify Edge Cases**: Help uncover potential edge cases and vulnerabilities that might be missed during manual test writing.
+- **Refactor Tests**: Assist in refactoring existing tests for better readability, maintainability, and performance.
+
+### Schema or API-aware Development
+AI tools are integrated to facilitate schema and API-aware development by:
+- **Validating API Contracts**: Ensuring that API requests and responses conform to the defined OpenAPI specification.
+- **Generating API Clients/Stubs**: Automatically generating client-side code or server stubs from API schemas, reducing manual effort and potential errors.
+- **Suggesting Database Migrations**: Proposing database schema changes based on application requirements and data model evolution.
+
+## 👥 User Role Management
+
+The ALX Polly application currently supports two primary user roles:
+
+-   **Regular Users (Poll Creators/Voters)**:
+    *   **Access**: Can register, log in, create new polls, view their own polls, update their own polls, toggle poll status (active/inactive), delete their own polls, and vote on any active public poll.
+    *   **Limitations**: Cannot manage other users' polls or access administrative features.
+
+-   **Admin Users (Future Scope)**:
+    *   **Access**: (Planned) Full access to all application features, including managing all polls (regardless of owner), user accounts, and system settings.
+    *   **Responsibilities**: Overseeing content, resolving disputes, and ensuring platform integrity.
+    *   **Implementation Note**: Admin role implementation is part of future enhancements and would involve additional authentication checks and UI/API segregation.
+
+## 📊 Poll Result Charts
+
+Poll results are visually presented using interactive charts to provide clear and immediate insights into voting patterns.
+-   **Charting Library**: The `app/components/PollResultChart.tsx` component utilizes a charting library (e.g., Chart.js) to render dynamic bar charts.
+-   **Data Visualization**: Each poll option's vote count and percentage are displayed, allowing users to quickly grasp the outcome.
+-   **Real-time Updates**: Integrated with Supabase subscriptions, the charts update in real-time as new votes are cast, providing an engaging user experience.
+
+## 📧 Email Notification System on Signup
+
+The application incorporates an email notification system, primarily for user onboarding:
+-   **Purpose**: To confirm successful user registration and potentially provide a welcome message or verification link.
+-   **Trigger**: An email is automatically sent to the user's registered email address upon successful signup.
+-   **Implementation**: This system is typically integrated with a the supabase email service client via Supabase's built-in email functionalities.
+-   **Future Enhancements**: Could be extended to include notifications for poll creation, voting reminders, or password reset confirmations.
 
 ## 📋 Prerequisites
 
 - Node.js 18+ 
 - npm, yarn, pnpm, or bun
 
-## �️ Supabase (optional but recommended)
+## ⚙️ Supabase (optional but recommended)
 
 This project is designed to work with Supabase for authentication and data storage.
 To use Supabase locally:
@@ -39,7 +131,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIU...
 If you don't provide Supabase keys the app will still run, but pages
 that depend on Supabase (auth, polls) will return empty data or redirect.
 
-## �🛠️ Installation
+## 🛠️ Installation
 
 1. **Clone the repository**
    ```bash
@@ -101,6 +193,11 @@ The application includes comprehensive tests:
 - **Integration Tests**: API endpoint testing
 - **Test Coverage**: Jest coverage reporting
 
+AI plays a crucial role in augmenting the testing process. It:
+- **Generate Test Cases**: Suggest comprehensive unit and integration test cases based on code logic and API specifications.
+- **Identify Edge Cases**: Help uncover potential edge cases and vulnerabilities that might be missed during manual test writing.
+- **Refactor Tests**: Assist in refactoring existing tests for better readability, maintainability, and performance.
+
 ### Test Structure
 ```
 __tests__/
@@ -133,22 +230,33 @@ alx-polly/
 │   ├── auth/              # Authentication pages (register/login/forgot)
 │   │   ├── login/         # Login UI and form (client + server action)
 │   │   └── register/      # Registration UI and form
+│   │   └── update-password/ # Password update UI and form
+│   │   └── forgot-password/ # Forgot password UI and form
+│   ├── components/        # Reusable React components
+│   │   ├── ui/            # UI primitives (Button, Input) using shadcn/ui
+│   │   ├── Navigation.tsx # Top navigation bar component
+│   │   ├── PollForm.tsx   # Form component used to create polls
+│   │   ├── VoteResult.tsx # Small component to show result rows
+│   │   ├── QRCodeCard.tsx # Renders QR codes for poll links
+│   │   └── ProtectedRoute.tsx # Client component for protecting routes
+│   ├── contexts/          # React Contexts for global state (e.g., AuthContext)
 │   ├── polls/             # Poll UI pages and nested routes
 │   │   ├── [id]/          # Per-poll pages (dynamic route segment)
 │   │   │   ├── results/   # Results view for a specific poll
 │   │   │   └── share/     # Share view that shows QR code / embed options
 │   │   ├── new/           # Page to create a new poll
 │   │   └── page.tsx       # Polls listing page
-│   ├── components/        # Reusable React components
-│   │   ├── ui/            # UI primitives (Button, Input) using shadcn/ui
-│   │   ├── Navigation.tsx # Top navigation bar component
-│   │   ├── PollForm.tsx   # Form component used to create polls
-│   │   ├── VoteResult.tsx # Small component to show result rows
-│   │   └── QRCodeCard.tsx # Renders QR codes for poll links
 │   ├── globals.css        # Global styles / Tailwind base imports
 │   ├── layout.tsx         # Root layout (head, providers, global UI)
 │   └── page.tsx           # Home page (landing / CTA)
 ├── lib/                   # Server & client helpers, supabase wiring
+│   ├── actions/           # Next.js Server Actions for data mutations
+│   │   ├── createPoll.ts
+│   │   ├── deletePoll.ts
+│   │   ├── togglePollStatus.ts
+│   │   └── updatePoll.ts
+│   ├── utils/             # Utility functions (e.g., QR code generation)
+│   │   └── qr-code.ts
 │   ├── supabase-server.ts  # Server-side Supabase client factory (cookies aware)
 │   ├── supabase.ts        # Browser/client Supabase client factory
 │   ├── auth.ts            # Auth helpers (getCurrentUser, requireAuth, getSession)
@@ -164,7 +272,7 @@ alx-polly/
 └── env.example            # Example environment variables to copy into .env.local
 ```
 
-## 📌 Annotated file/folder reference
+## 📌 Annotated File/Folder Reference
 
 Below are short descriptions for the most important files and helpers so
 contributors can quickly understand responsibilities and integration points.
@@ -192,7 +300,7 @@ contributors can quickly understand responsibilities and integration points.
    instance on prop changes to avoid memory leaks.
 - `app/components/QRCodeCard.tsx` — Renders a QR code for a poll link (uses project qr-code helper).
 
-## ⚙️ Core Functions (what they do)
+## ⚙️ Core Functions (What they do)
 
 - `createServerSupabaseClient()` (`lib/supabase-server.ts`)
    - Purpose: returns a Supabase client configured for server-side use in Next.js.
@@ -211,12 +319,11 @@ contributors can quickly understand responsibilities and integration points.
 - `getSession()` (`lib/auth.ts`)
    - Purpose: returns the current Supabase session (or `null` when not available).
 
-## 🔍 Notes for contributors
+## 🔍 Notes for Contributors
 
 - Follow the project's conventions: server data fetching happens in Server Components; use Next.js Server Actions
    for mutations where possible and prefer Supabase calls from server helpers to keep secrets server-only.
 - When adding routes, maintain tests in `__tests__/` and ensure both unit and integration tests cover core behavior.
-
 
 ## 🌍 Environment Variables
 
@@ -304,9 +411,6 @@ For support and questions:
 
 ## 🎯 Upcoming Features
 
-- [ ] User authentication with JWT
-- [ ] Database integration (PostgreSQL)
-- [ ] Real-time voting updates
 - [ ] Email notifications
 - [ ] Advanced analytics
 - [ ] Mobile app
